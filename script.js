@@ -37,44 +37,46 @@ class Hangman {
     // Блок человека
     const gallowsImg = document.createElement('img')
     gallowsImg.className = 'gallows__img'
-    gallowsImg.src = '../assest/gallows.png'
+    gallowsImg.src = '../assets/gallows.png'
     gallowsImg.alt = 'gallows'
     gallows.append(gallowsImg)
 
     const gallowsHead = document.createElement('img')
-    gallowsHead.className = 'gallows__head'
-    gallowsHead.src = '../assest/head.png'
+    gallowsHead.className = 'gallows__head gallows__part'
+    gallowsHead.src = '../assets/hangman-1.png'
     gallowsHead.alt = 'head'
     gallows.append(gallowsHead)
 
+
     const gallowsBody = document.createElement('img')
-    gallowsBody.className = 'gallows__body'
-    gallowsBody.src = '../assest/body.png'
-    gallowsBody.alt = 'gallowsBody'
+    gallowsBody.className = 'gallows__body gallows__part'
+    gallowsBody.src = '../assets/hangman-2.png'
+    gallowsBody.alt = 'Body'
     gallows.append(gallowsBody)
 
     const gallowsRigthHand = document.createElement('img')
-    gallowsRigthHand.className = 'gallows__rigthHand'
-    gallowsRigthHand.src = '../assest/hand-one.png'
-    gallowsRigthHand.alt = 'gallowsRigthHand'
+    gallowsRigthHand.className = 'gallows__rigthHand gallows__part'
+    gallowsRigthHand.src = '../assets/hangman-3.png'
+    gallowsRigthHand.alt = 'RigthHand'
     gallows.append(gallowsRigthHand)
 
     const gallowsLeftHand = document.createElement('img')
-    gallowsLeftHand.className = 'gallows__leftHand'
-    gallowsLeftHand.src = '../assest/hand-two.png'
-    gallowsLeftHand.alt = 'gallowsLeftHand'
+    gallowsLeftHand.className = 'gallows__leftHand gallows__part'
+    gallowsLeftHand.src = '../assets/hangman-4.png'
+    gallowsLeftHand.alt = 'LeftHand'
     gallows.append(gallowsLeftHand)
 
     const gallowsRigthLeg = document.createElement('img')
-    gallowsRigthLeg.className = 'gallows__rigthLeg'
-    gallowsRigthLeg.src = '../assest/leg-one.png'
-    gallowsRigthLeg.alt = 'gallowsRigthLeg'
+    gallowsRigthLeg.className = 'gallows__rigthLeg gallows__part'
+    gallowsRigthLeg.src = '../assets/hangman-5.png'
+    gallowsRigthLeg.alt = 'RigthLeg'
     gallows.append(gallowsRigthLeg)
 
+
     const gallowsLeftLeg = document.createElement('img')
-    gallowsLeftLeg.className = 'gallows__leftLeg'
-    gallowsLeftLeg.src = '../assest/leg-two.png'
-    gallowsLeftLeg.alt = 'gallowsLeftLeg'
+    gallowsLeftLeg.className = 'gallows__leftLeg gallows__part'
+    gallowsLeftLeg.src = '../assets/hangman-6.png'
+    gallowsLeftLeg.alt = 'LeftLeg'
     gallows.append(gallowsLeftLeg)
 
 
@@ -91,9 +93,16 @@ class Hangman {
     clue.className = 'clue'
     game.append(clue)
 
-    // Вопросы и Ответы
-    let currentAnswer;
 
+
+    //Переменные
+    let currentAnswer;
+    let countWrong = -1;
+    let trueAnswer = [];
+    let maxAttempt = 5;
+    let letters;
+
+    //Случайный вопрос и ответ
     const getRandom = () => {
       let { answer, question } = questionsAndAnswers[Math.floor(Math.random() * questionsAndAnswers.length)]
 
@@ -103,28 +112,17 @@ class Hangman {
         const letter = document.createElement('li');
         letter.className = 'word__letter'
         word.append(letter)
+
       })
       clue.innerHTML = question;
+
     }
 
     getRandom();
 
-    console.log(currentAnswer);
+
 
     // Экранная клавиатура
-    const onSymbolClick = (event) => {
-      const char = event.target.innerText;
-
-      currentAnswer.map((el, index) => {
-        if (el === char) {
-          word.querySelectorAll('li')[index].innerHTML = char;
-          word.querySelectorAll('li')[index].className = 'word__letter-guessed'
-        } else {
-          // renderHangman()
-        }
-      })
-    };
-
     const getKeyboard = () => {
       const alph = "йцукенгшщзхъфывапролджэячсмитьбю";
 
@@ -146,6 +144,92 @@ class Hangman {
     };
 
     game.append(getKeyboard())
+
+
+    // Проверка слова
+    function onSymbolClick(event) {
+
+      const char = event.target.innerText;
+
+      if (currentAnswer.includes(char)) {
+        currentAnswer.map((el, index) => {
+          if (el === char) {
+            trueAnswer.push(char)
+            word.querySelectorAll('li')[index].innerHTML = char;
+            word.querySelectorAll('li')[index].className = 'word__letter-guessed'
+          }
+        })
+      } else {
+        // renderHangman()
+        countWrong++
+        document.getElementsByClassName('gallows__part')[`${countWrong}`].style = "display: block"
+      }
+
+      if (countWrong === maxAttempt) return gameOver(false)
+      if (currentAnswer.length === trueAnswer.length) return gameOver(true)
+
+    };
+
+
+    // Модальное окно
+    const modale = document.createElement('div')
+    modale.className = 'modale'
+    container.append(modale)
+
+    const modaleImg = document.createElement('img')
+    modaleImg.className = 'modale__img'
+    modaleImg.src = '../assets/lose.png'
+    modale.append(modaleImg)
+
+    const modaleText = document.createElement('h3')
+    modaleText.className = 'modale__text'
+    modaleText.innerText.toLocaleUpperCase()
+    modale.append(modaleText)
+
+    const modaleBtn = document.createElement('button')
+    modaleBtn.className = 'modale__btn'
+    modaleBtn.innerHTML = 'Играть заново'
+    modale.append(modaleBtn)
+
+
+    // Победа или поражение
+    let gameOver = (victory) => {
+      if (victory == true) {
+        container.getElementsByClassName('modale')[0].className = "modale-active"
+
+        modale.getElementsByClassName('modale__img')[0].src = '../assets/win.png'
+        modale.getElementsByClassName('modale__text')[0].innerHTML = 'Ты выиграл!'
+      } else {
+        container.getElementsByClassName('modale')[0].className = "modale-active"
+
+        modale.getElementsByClassName('modale__img')[0].src = '../assets/lose.png'
+        modale.getElementsByClassName('modale__text')[0].innerHTML = 'Ты проиграл!'
+      }
+    }
+
+    // Играть заново
+    function gameRestart() {
+      countWrong = -1;
+      trueAnswer = []
+
+      // Нужно удалить из DOM-дерева узлы отвечающие за отрисовку слова и вопроса
+      // Затем вызвать getRandom
+
+      word.querySelectorAll('li')
+
+      // answer = answer.toLocaleUpperCase().split('').map((i) => {
+      //   const letter = document.createElement('li');
+      //   letter.className = 'word__letter'
+      //   word.append(letter)
+      // })
+      modale.className = "modale"
+      // Сделать так, чтоб человечек был обернут в свой тэг. Менять только его стиль. Не искать каждый раз элементы в DOM
+      gallows.getElementsByTagName('div').style = "display: none"
+
+      getRandom()
+    }
+
+    modaleBtn.onclick = gameRestart
   }
 }
 
