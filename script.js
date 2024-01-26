@@ -214,9 +214,8 @@ class Hangman {
 
       // Нужно удалить из DOM-дерева узлы отвечающие за отрисовку слова и вопроса
       // Затем вызвать getRandom
-
-      word.querySelectorAll('li')
-
+      let a = document.body.getElementsByClassName('word__letter')
+      a.remove()
       // answer = answer.toLocaleUpperCase().split('').map((i) => {
       //   const letter = document.createElement('li');
       //   letter.className = 'word__letter'
@@ -226,7 +225,7 @@ class Hangman {
       // Сделать так, чтоб человечек был обернут в свой тэг. Менять только его стиль. Не искать каждый раз элементы в DOM
       gallows.getElementsByTagName('div').style = "display: none"
 
-      getRandom()
+      // getRandom()
     }
 
     modaleBtn.onclick = gameRestart
