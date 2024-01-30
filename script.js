@@ -4,231 +4,242 @@ import { questionsAndAnswers } from './questions.js'
 // - newGame() - создает новую игру
 // - createGame(params) - создает компонентs для поля (виселица, клавиатура, вопрос-ответ) на основе json-файла, описывающего структуру тэгов (задание со звездочкой) **
 // - validateAnswer(word) - проверяет соответствие текущей буквы ответу
-// - renderHangman() - рисует человечка по частям на основе текущего значения итератора
+// - this.renderHangman() - рисует человечка по частям на основе текущего значения итератора
 // - gameOver() - вызывается когда мы ответили правильно, либо проиграли. рисует текст и кнопку "начать заново"
 class Hangman {
   constructor() {
+    this.currentAnswer = [];
+    this.countWrong = -1;
+    this.trueAnswer = [];
+    this.maxAttempt = 5;
     this.createGame()
   }
 
+  // Проверка слова
+  onSymbolClick(event) {
+    const char = event.target.innerText;
+
+    if (this.currentAnswer.includes(char)) {
+      this.currentAnswer.map((el, index) => {
+        if (el === char) {
+          this.trueAnswer.push(char)
+          this.word.querySelectorAll('li')[index].innerHTML = char;
+          this.word.querySelectorAll('li')[index].className = 'word__letter-guessed'
+        }
+      })
+    } else {
+      // this.renderHangman()
+      this.countWrong++
+      let parts = hangman.getElementsByClassName('hangman__part')
+      this.renderHangman(parts, "show", this.countWrong)
+    }
+
+    if (this.countWrong === this.maxAttempt) return this.gameResult(false)
+    if (this.currentAnswer.length === this.trueAnswer.length) return this.gameResult(true)
+
+  };
+
+  //Случайный вопрос и ответ
+  generateRandomQuestion() {
+    let { answer, question } = questionsAndAnswers[Math.floor(Math.random() * questionsAndAnswers.length)]
+
+    this.currentAnswer = answer.toLocaleUpperCase().split('');
+
+    answer = answer.toLocaleUpperCase().split('').map((i) => {
+      const letter = document.createElement('li');
+      letter.className = 'word__letter'
+      this.word.append(letter)
+
+    })
+    this.clue.innerHTML = question;
+
+  }
+
+  // Экранная клавиатура
+  getKeyboard() {
+    const alph = "йцукенгшщзхъфывапролджэячсмитьбю";
+
+    const keyboard = document.createElement("div");
+    keyboard.className = "keyboard";
+
+    const keyboardBtns = alph.toUpperCase().split("").map((word) => {
+      const button = document.createElement("button");
+      button.append(word);
+      button.className = "keyboard__btn";
+      button.onclick = this.onSymbolClick;
+
+      return button;
+    });
+
+    keyboard.append(...keyboardBtns);
+
+    return keyboard;
+  };
+
+  // Победа или поражение
+  gameResult(victory) {
+    if (victory == true) {
+      this.container.getElementsByClassName('modale')[0].className = "modale-active"
+
+      this.modale.getElementsByClassName('modale__img')[0].src = '../assets/win.png'
+      this.modale.getElementsByClassName('modale__text')[0].innerHTML = 'Ты выиграл!'
+    } else {
+      this.container.getElementsByClassName('modale')[0].className = "modale-active"
+
+      this.modale.getElementsByClassName('modale__img')[0].src = '../assets/lose.png'
+      this.modale.getElementsByClassName('modale__text')[0].innerHTML = 'Ты проиграл!'
+    }
+  }
+
+  // Играть заново
+  gameRestart() {
+    this.countWrong = -1;
+    this.trueAnswer = []
+
+    this.modale.className = "modale"
+    this.word.innerHTML = ''
+
+
+    let parts = hangman.getElementsByClassName('hangman__part')
+
+    this.renderHangman(parts, "hide")
+
+    this.generateRandomQuestion()
+  }
+
+  renderHangman(collection, type, counter) {
+    // type = "show" | "hide"
+    if (counter !== undefined) {
+      if (type === "show") {
+        collection[`${counter}`].style = "display: block";
+      } else if (type === "hide") {
+        collection[`${counter}`].style = "display: none";
+      }
+      return
+    }
+
+    if (type === "show") {
+      this.changeHangmanStyle(collection, { display: "block" })
+    } else if (type === "hide") {
+      this.changeHangmanStyle(collection, { display: "none" })
+    }
+  }
+
+  changeHangmanStyle(collection, options) {
+    for (const el of collection) {
+      el.style = {
+        ...el.style, ...options
+      }
+    }
+  }
+
   createGame() {
-    const root = document.getElementById('root')
+    this.root = document.getElementById('root')
 
     // Основной блок
-    const container = document.createElement('div')
-    container.className = 'container'
-    document.body.append(container)
+    this.container = document.createElement('div')
+    this.container.className = 'container'
+    document.body.append(this.container)
 
-    const h1 = document.createElement('h1')
-    h1.className = 'title'
-    h1.innerHTML = 'ВИСИЛИЦА'
+    this.h1 = document.createElement('h1')
+    this.h1.className = 'title'
+    this.h1.innerHTML = 'ВИСИЛИЦА'
 
-    container.append(h1)
+    this.container.append(this.h1)
 
-    const content = document.createElement('div');
-    content.className = 'content'
-    container.append(content)
+    this.content = document.createElement('div');
+    this.content.className = 'content'
+    this.container.append(this.content)
 
     // Блок висилицы
-    const gallows = document.createElement('div')
-    gallows.className = 'gallows'
-    content.append(gallows)
+    this.gallows = document.createElement('div')
+    this.gallows.className = 'gallows'
+    this.content.append(this.gallows)
+
+    this.gallowsImg = document.createElement('img')
+    this.gallowsImg.className = 'gallows__img'
+    this.gallowsImg.src = '../assets/gallows.png'
+    this.gallowsImg.alt = 'gallows'
+    this.gallows.append(this.gallowsImg)
 
     // Блок человека
-    const gallowsImg = document.createElement('img')
-    gallowsImg.className = 'gallows__img'
-    gallowsImg.src = '../assets/gallows.png'
-    gallowsImg.alt = 'gallows'
-    gallows.append(gallowsImg)
+    this.hangman = document.createElement('div')
+    this.hangman.className = 'hangman'
+    this.gallows.append(this.hangman)
 
-    const gallowsHead = document.createElement('img')
-    gallowsHead.className = 'gallows__head gallows__part'
-    gallowsHead.src = '../assets/hangman-1.png'
-    gallowsHead.alt = 'head'
-    gallows.append(gallowsHead)
+    this.hangmanHead = document.createElement('img')
+    this.hangmanHead.className = 'hangman__head hangman__part'
+    this.hangmanHead.src = '../assets/hangman-1.png'
+    this.hangmanHead.alt = 'head'
+    this.hangman.append(this.hangmanHead)
 
+    this.hangmanBody = document.createElement('img')
+    this.hangmanBody.className = 'hangman__body hangman__part'
+    this.hangmanBody.src = '../assets/hangman-2.png'
+    this.hangmanBody.alt = 'Body'
+    this.hangman.append(this.hangmanBody)
 
-    const gallowsBody = document.createElement('img')
-    gallowsBody.className = 'gallows__body gallows__part'
-    gallowsBody.src = '../assets/hangman-2.png'
-    gallowsBody.alt = 'Body'
-    gallows.append(gallowsBody)
+    this.hangmanRigthHand = document.createElement('img')
+    this.hangmanRigthHand.className = 'hangman__rigthHand hangman__part'
+    this.hangmanRigthHand.src = '../assets/hangman-3.png'
+    this.hangmanRigthHand.alt = 'RigthHand'
+    this.hangman.append(this.hangmanRigthHand)
 
-    const gallowsRigthHand = document.createElement('img')
-    gallowsRigthHand.className = 'gallows__rigthHand gallows__part'
-    gallowsRigthHand.src = '../assets/hangman-3.png'
-    gallowsRigthHand.alt = 'RigthHand'
-    gallows.append(gallowsRigthHand)
+    this.hangmanLeftHand = document.createElement('img')
+    this.hangmanLeftHand.className = 'hangman__leftHand hangman__part'
+    this.hangmanLeftHand.src = '../assets/hangman-4.png'
+    this.hangmanLeftHand.alt = 'LeftHand'
+    this.hangman.append(this.hangmanLeftHand)
 
-    const gallowsLeftHand = document.createElement('img')
-    gallowsLeftHand.className = 'gallows__leftHand gallows__part'
-    gallowsLeftHand.src = '../assets/hangman-4.png'
-    gallowsLeftHand.alt = 'LeftHand'
-    gallows.append(gallowsLeftHand)
+    this.hangmanRigthLeg = document.createElement('img')
+    this.hangmanRigthLeg.className = 'hangman__rigthLeg hangman__part'
+    this.hangmanRigthLeg.src = '../assets/hangman-5.png'
+    this.hangmanRigthLeg.alt = 'RigthLeg'
+    this.hangman.append(this.hangmanRigthLeg)
 
-    const gallowsRigthLeg = document.createElement('img')
-    gallowsRigthLeg.className = 'gallows__rigthLeg gallows__part'
-    gallowsRigthLeg.src = '../assets/hangman-5.png'
-    gallowsRigthLeg.alt = 'RigthLeg'
-    gallows.append(gallowsRigthLeg)
-
-
-    const gallowsLeftLeg = document.createElement('img')
-    gallowsLeftLeg.className = 'gallows__leftLeg gallows__part'
-    gallowsLeftLeg.src = '../assets/hangman-6.png'
-    gallowsLeftLeg.alt = 'LeftLeg'
-    gallows.append(gallowsLeftLeg)
+    this.hangmanLeftLeg = document.createElement('img')
+    this.hangmanLeftLeg.className = 'hangman__leftLeg hangman__part'
+    this.hangmanLeftLeg.src = '../assets/hangman-6.png'
+    this.hangmanLeftLeg.alt = 'LeftLeg'
+    this.hangman.append(this.hangmanLeftLeg)
 
 
     // Блок с вопросом и словом
-    const game = document.createElement('div')
-    game.className = 'game'
-    content.append(game)
+    this.game = document.createElement('div')
+    this.game.className = 'game'
+    this.content.append(this.game)
 
-    const word = document.createElement('ul')
-    word.className = 'word'
-    game.append(word)
+    this.word = document.createElement('ul')
+    this.word.className = 'word'
+    this.game.append(this.word)
 
-    const clue = document.createElement('div');
-    clue.className = 'clue'
-    game.append(clue)
-
-
-
-    //Переменные
-    let currentAnswer;
-    let countWrong = -1;
-    let trueAnswer = [];
-    let maxAttempt = 5;
-    let letters;
-
-    //Случайный вопрос и ответ
-    const getRandom = () => {
-      let { answer, question } = questionsAndAnswers[Math.floor(Math.random() * questionsAndAnswers.length)]
-
-      currentAnswer = answer.toLocaleUpperCase().split('');
-
-      answer = answer.toLocaleUpperCase().split('').map((i) => {
-        const letter = document.createElement('li');
-        letter.className = 'word__letter'
-        word.append(letter)
-
-      })
-      clue.innerHTML = question;
-
-    }
-
-    getRandom();
-
-
-
-    // Экранная клавиатура
-    const getKeyboard = () => {
-      const alph = "йцукенгшщзхъфывапролджэячсмитьбю";
-
-      const keyboard = document.createElement("div");
-      keyboard.className = "keyboard";
-
-      const keyboardBtns = alph.toUpperCase().split("").map((word) => {
-        const button = document.createElement("button");
-        button.append(word);
-        button.className = "keyboard__btn";
-        button.onclick = onSymbolClick;
-
-        return button;
-      });
-
-      keyboard.append(...keyboardBtns);
-
-      return keyboard;
-    };
-
-    game.append(getKeyboard())
-
-
-    // Проверка слова
-    function onSymbolClick(event) {
-
-      const char = event.target.innerText;
-
-      if (currentAnswer.includes(char)) {
-        currentAnswer.map((el, index) => {
-          if (el === char) {
-            trueAnswer.push(char)
-            word.querySelectorAll('li')[index].innerHTML = char;
-            word.querySelectorAll('li')[index].className = 'word__letter-guessed'
-          }
-        })
-      } else {
-        // renderHangman()
-        countWrong++
-        document.getElementsByClassName('gallows__part')[`${countWrong}`].style = "display: block"
-      }
-
-      if (countWrong === maxAttempt) return gameOver(false)
-      if (currentAnswer.length === trueAnswer.length) return gameOver(true)
-
-    };
-
+    this.clue = document.createElement('div');
+    this.clue.className = 'clue'
+    this.game.append(this.clue)
 
     // Модальное окно
-    const modale = document.createElement('div')
-    modale.className = 'modale'
-    container.append(modale)
+    this.modale = document.createElement('div')
+    this.className = 'modale'
+    this.container.append(this.modale)
 
-    const modaleImg = document.createElement('img')
-    modaleImg.className = 'modale__img'
-    modaleImg.src = '../assets/lose.png'
-    modale.append(modaleImg)
+    this.modaleImg = document.createElement('img')
+    this.modaleImg.className = 'modale__img'
+    this.modaleImg.src = '../assets/lose.png'
+    this.modale.append(this.modaleImg)
 
-    const modaleText = document.createElement('h3')
-    modaleText.className = 'modale__text'
-    modaleText.innerText.toLocaleUpperCase()
-    modale.append(modaleText)
+    this.modaleText = document.createElement('h3')
+    this.modaleText.className = 'modale__text'
+    this.modaleText.innerText.toLocaleUpperCase()
+    this.modale.append(this.modaleText)
 
-    const modaleBtn = document.createElement('button')
-    modaleBtn.className = 'modale__btn'
-    modaleBtn.innerHTML = 'Играть заново'
-    modale.append(modaleBtn)
+    this.modaleBtn = document.createElement('button')
+    this.modaleBtn.className = 'modale__btn'
+    this.modaleBtn.innerHTML = 'Играть заново'
+    this.modale.append(this.modaleBtn)
 
-
-    // Победа или поражение
-    let gameOver = (victory) => {
-      if (victory == true) {
-        container.getElementsByClassName('modale')[0].className = "modale-active"
-
-        modale.getElementsByClassName('modale__img')[0].src = '../assets/win.png'
-        modale.getElementsByClassName('modale__text')[0].innerHTML = 'Ты выиграл!'
-      } else {
-        container.getElementsByClassName('modale')[0].className = "modale-active"
-
-        modale.getElementsByClassName('modale__img')[0].src = '../assets/lose.png'
-        modale.getElementsByClassName('modale__text')[0].innerHTML = 'Ты проиграл!'
-      }
-    }
-
-    // Играть заново
-    function gameRestart() {
-      countWrong = -1;
-      trueAnswer = []
-
-      // Нужно удалить из DOM-дерева узлы отвечающие за отрисовку слова и вопроса
-      // Затем вызвать getRandom
-      let a = document.body.getElementsByClassName('word__letter')
-      a.remove()
-      // answer = answer.toLocaleUpperCase().split('').map((i) => {
-      //   const letter = document.createElement('li');
-      //   letter.className = 'word__letter'
-      //   word.append(letter)
-      // })
-      modale.className = "modale"
-      // Сделать так, чтоб человечек был обернут в свой тэг. Менять только его стиль. Не искать каждый раз элементы в DOM
-      gallows.getElementsByTagName('div').style = "display: none"
-
-      // getRandom()
-    }
-
-    modaleBtn.onclick = gameRestart
+    this.generateRandomQuestion();
+    this.game.append(this.getKeyboard())
+    this.modaleBtn.onclick = this.gameRestart
   }
 }
 

@@ -11,7 +11,6 @@ html {
 
 body {
   display: flex;
-  justify-content: center;
   flex-direction: column;
   align-items: center;
 
@@ -35,14 +34,14 @@ li {
 .container {
   width: 100%;
   max-width: 100rem;
-  height: fit-content; // 60rem
-
+  height: fit-content;
   background-color: white;
   border-radius: 5rem;
 
   display: flex;
   align-items: center;
   flex-direction: column;
+  margin: 30rem 0;
 }
 
 .title {
@@ -67,12 +66,8 @@ li {
 .gallows {
   width: 100%;
   max-width: 30rem;
-  height: 100%;
-  max-height: 50rem;
 
   display: flex;
-  justify-content: center;
-  position: relative;
 
   &__img {
     width: 100%;
@@ -80,20 +75,22 @@ li {
     height: 100%;
     max-height: 45rem;
   }
+}
 
-  &__man {
-    width: 100%;
-    height: fit-content;
-    position: absolute;
-  }
+.hangman {
+  width: 100%;
+  height: fit-content;
+  position: relative;
+
+  display: flex;
 
   &__head {
     width: 8rem;
     height: 8rem;
 
     position: absolute;
-    top: 11rem;
-    right: 2rem;
+    top: 11.5rem;
+    right: 4.5rem;
   }
 
   &__body {
@@ -101,8 +98,8 @@ li {
     height: 10rem;
 
     position: absolute;
-    top: 19rem;
-    right: 6rem;
+    top: 19.5rem;
+    right: 8rem;
   }
 
   &__rigthHand {
@@ -110,8 +107,8 @@ li {
     height: 7rem;
 
     position: absolute;
-    top: 19rem;
-    right: 6rem;
+    top: 19.5rem;
+    right: 8rem;
   }
 
   &__leftHand {
@@ -119,8 +116,8 @@ li {
     height: 7rem;
 
     position: absolute;
-    top: 19rem;
-    right: 1.5rem;
+    top: 19.5rem;
+    right: 3.5rem;
   }
 
   &__rigthLeg {
@@ -128,8 +125,8 @@ li {
     height: 7rem;
 
     position: absolute;
-    top: 28.5rem;
-    right: 6rem;
+    top: 29rem;
+    right: 8rem;
   }
 
   &__leftLeg {
@@ -137,17 +134,14 @@ li {
     height: 7rem;
 
     position: absolute;
-    top: 28.5rem;
-    right: 1.5rem;
+    top: 29rem;
+    right: 3.5rem;
   }
 
-  .gallows__part {
+  &__part {
     display: none;
   }
 }
-
-
-
 
 .game {
   width: 100%;
@@ -163,7 +157,7 @@ li {
   width: 100%;
   max-width: 55rem;
   height: 5rem; // fit-content
-  margin: 4rem 0;
+  margin: 4rem 0 0 0;
   font-size: 4rem;
 
   display: flex;
@@ -193,10 +187,9 @@ li {
 .clue {
   width: 100%;
   max-width: 55rem;
-  height: 20rem;
-  margin-bottom: 2rem;
-  font-size: 3rem;
-  padding: 2rem;
+  height: 18rem;
+  font-size: 2.5rem;
+  margin: 2rem;
 
   display: flex;
   justify-content: center;
@@ -207,7 +200,7 @@ li {
   width: 100%;
   max-width: 55rem;
   height: 10rem;
-  gap: 0.8rem;
+  gap: 0.7rem;
 
   display: flex;
   justify-content: center;
