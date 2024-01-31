@@ -20,8 +20,6 @@ class Hangman {
   onSymbolClick = (event) => {
     const char = event.target.innerText;
 
-    console.log("event target ");
-
     if (this.trueAnswer.includes(char)) {
       return;
     }
@@ -31,8 +29,7 @@ class Hangman {
         if (el === char) {
           this.trueAnswer = this.trueAnswer + el;
           this.word.querySelectorAll("li")[index].innerHTML = char;
-          this.word.querySelectorAll("li")[index].className =
-            "word__letter-guessed";
+          this.word.querySelectorAll("li")[index].className = "word__letter-guessed";
 
           event.target.disabled = true;
         }
@@ -44,9 +41,6 @@ class Hangman {
       this.renderHangman(parts, "show", this.countWrong);
     }
 
-    console.log("this.currentAnswer ", this.currentAnswer);
-    console.log("this.trueAnswer ", this.trueAnswer);
-
     if (this.countWrong === this.maxAttempt) return this.gameResult(false);
     if (this.currentAnswer.length === this.trueAnswer.length)
       return this.gameResult(true);
@@ -56,7 +50,7 @@ class Hangman {
   generateRandomQuestion() {
     let { answer, question } =
       questionsAndAnswers[
-        Math.floor(Math.random() * questionsAndAnswers.length)
+      Math.floor(Math.random() * questionsAndAnswers.length)
       ];
 
     this.currentAnswer = answer.toLocaleUpperCase().split("");
@@ -99,13 +93,13 @@ class Hangman {
   // Победа или поражение
   gameResult(victory) {
     if (victory == true) {
-      this.container.querySelector(".modale").className = "modale-active";
-      this.modale.querySelector(".modale__img").src = "../assets/win.png";
-      this.modale.querySelector(".modale__text").innerHTML = "Ты выиграл!";
+      this.container.querySelector(".modal").className = "modal-active";
+      this.modal.querySelector(".modal__img").src = "../assets/win.png";
+      this.modal.querySelector(".modal__text").innerHTML = "Ты выиграл!";
     } else {
-      this.container.querySelector(".modale").className = "modale-active";
-      this.modale.querySelector(".modale__img").src = "../assets/lose.png";
-      this.modale.querySelector(".modale__text").innerHTML = "Ты проиграл!";
+      this.container.querySelector(".modal").className = "modal-active";
+      this.modal.querySelector(".modal__img").src = "../assets/lose.png";
+      this.modal.querySelector(".modal__text").innerHTML = "Ты проиграл!";
     }
   }
 
@@ -113,7 +107,7 @@ class Hangman {
   gameRestart = () => {
     this.countWrong = -1;
     this.trueAnswer = [];
-    this.modale.className = "modale";
+    this.modal.className = "modal";
     this.word.innerHTML = "";
 
     let parts = this.hangman.getElementsByClassName("hangman__part");
@@ -240,28 +234,28 @@ class Hangman {
     this.game.append(this.clue);
 
     // Модальное окно
-    this.modale = document.createElement("div");
-    this.modale.className = "modale";
-    this.container.append(this.modale);
+    this.modal = document.createElement("div");
+    this.modal.className = "modal";
+    this.container.append(this.modal);
 
-    this.modaleImg = document.createElement("img");
-    this.modaleImg.className = "modale__img";
-    this.modaleImg.src = "../assets/lose.png";
-    this.modale.append(this.modaleImg);
+    this.modalImg = document.createElement("img");
+    this.modalImg.className = "modal__img";
+    this.modalImg.src = "../assets/lose.png";
+    this.modal.append(this.modalImg);
 
-    this.modaleText = document.createElement("h3");
-    this.modaleText.className = "modale__text";
-    this.modaleText.innerText.toLocaleUpperCase();
-    this.modale.append(this.modaleText);
+    this.modalText = document.createElement("h3");
+    this.modalText.className = "modal__text";
+    this.modalText.innerText.toLocaleUpperCase();
+    this.modal.append(this.modalText);
 
-    this.modaleBtn = document.createElement("button");
-    this.modaleBtn.className = "modale__btn";
-    this.modaleBtn.innerHTML = "Играть заново";
-    this.modale.append(this.modaleBtn);
+    this.modalBtn = document.createElement("button");
+    this.modalBtn.className = "modal__btn";
+    this.modalBtn.innerHTML = "Играть заново";
+    this.modal.append(this.modalBtn);
 
     this.generateRandomQuestion();
     this.game.append(this.getKeyboard());
-    this.modaleBtn.onclick = this.gameRestart;
+    this.modalBtn.onclick = this.gameRestart;
   }
 }
 

@@ -204,10 +204,10 @@ li {
   cursor: pointer;
 }
 
-.modale {
+.modal {
   display: none;
 }
-.modale-active {
+.modal-active {
   display: flex;
   max-width: 100rem;
   max-height: 60rem;
@@ -219,12 +219,12 @@ li {
   align-items: center;
   position: absolute;
 }
-.modale__img {
+.modal__img {
   width: 25rem;
   height: auto;
   margin: 2rem 0 5rem 0;
 }
-.modale__text {
+.modal__text {
   display: flex;
   width: 100%;
   max-width: 40rem;
@@ -233,7 +233,7 @@ li {
   justify-content: center;
   margin-bottom: 4rem;
 }
-.modale__btn {
+.modal__btn {
   display: flex;
   width: 25rem;
   border-radius: 3rem;

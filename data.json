@@ -1,0 +1,97 @@
+{
+  "tagName": "div",
+  "className": "container",
+  "children": [
+    {
+      "tagName": "h1",
+      "className": "title"
+    },
+    {
+      "tagName": "div",
+      "className": "content",
+      "children": [
+        {
+          "tagName": "div",
+          "className": "gallows",
+          "children": [
+            {
+              "tagName": "img",
+              "className": "gallows__img",
+              "src": "../assets/gallows.png"
+            },
+            {
+              "tagName": "div",
+              "className": "hangman",
+              "children": [
+                {
+                  "tagName": "img",
+                  "className": "hangman__part hangman__head",
+                  "src": "../assets/hangman-1.png"
+                },
+                {
+                  "tagName": "img",
+                  "className": "hangman__part hangman__body",
+                  "src": "../assets/hangman-2.png"
+                },
+                {
+                  "tagName": "img",
+                  "className": "hangman__part hangman__rightHand",
+                  "src": "../assets/hangman-3.png"
+                },
+                {
+                  "tagName": "img",
+                  "className": "hangman__part hangman__leftHand",
+                  "src": "../assets/hangman-4.png"
+                },
+                {
+                  "tagName": "img",
+                  "className": "hangman__part hangman__rightLeg",
+                  "src": "../assets/hangman-5.png"
+                },
+                {
+                  "tagName": "img",
+                  "className": "hangman__part hangman__leftLeg",
+                  "src": "../assets/hangman-6.png"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "tagName": "div",
+          "className": "game",
+          "children": [
+            {
+              "tagName": "ul",
+              "className": "word"
+            },
+            {
+              "tagName": "div",
+              "className": "clue"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tagName": "div",
+      "className": "modal",
+      "children": [
+        {
+          "tagName": "img",
+          "className": "modal__img",
+          "src": "../assets/lose.png"
+        },
+        {
+          "tagName": "h3",
+          "className": "modal__text"
+        },
+        {
+          "tagName": "button",
+          "className": "modal__btn",
+          "innerText": "Играть заново"
+        }
+      ]
+    }
+  ]
+}
