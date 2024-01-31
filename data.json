@@ -4,7 +4,8 @@
   "children": [
     {
       "tagName": "h1",
-      "className": "title"
+      "className": "title",
+      "innerText": "ВИСЕЛИЦА"
     },
     {
       "tagName": "div",
@@ -68,6 +69,172 @@
             {
               "tagName": "div",
               "className": "clue"
+            },
+            {
+              "tagName": "div",
+              "className": "keyboard",
+              "children": [
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "Й"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "Ц"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "У"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "К"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "Е"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "Н"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "Г"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "Ш"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "Щ"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "З"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "Х"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "Ъ"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "Ф"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "Ы"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "В"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "А"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "П"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "Р"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "О"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "Л"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "Д"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "Ж"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "Э"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "Я"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "Ч"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "С"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "М"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "И"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "Т"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "Ь"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "Б"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "Ю"
+                }
+              ]
             }
           ]
         }
