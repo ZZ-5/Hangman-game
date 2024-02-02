@@ -1,0 +1,264 @@
+{
+  "tagName": "div",
+  "className": "container",
+  "children": [
+    {
+      "tagName": "h1",
+      "className": "title",
+      "innerText": "ВИСЕЛИЦА"
+    },
+    {
+      "tagName": "div",
+      "className": "content",
+      "children": [
+        {
+          "tagName": "div",
+          "className": "gallows",
+          "children": [
+            {
+              "tagName": "img",
+              "className": "gallows__img",
+              "src": "../assets/gallows.png"
+            },
+            {
+              "tagName": "div",
+              "className": "hangman",
+              "children": [
+                {
+                  "tagName": "img",
+                  "className": "hangman__part hangman__head",
+                  "src": "../assets/hangman-1.png"
+                },
+                {
+                  "tagName": "img",
+                  "className": "hangman__part hangman__body",
+                  "src": "../assets/hangman-2.png"
+                },
+                {
+                  "tagName": "img",
+                  "className": "hangman__part hangman__rightHand",
+                  "src": "../assets/hangman-3.png"
+                },
+                {
+                  "tagName": "img",
+                  "className": "hangman__part hangman__leftHand",
+                  "src": "../assets/hangman-4.png"
+                },
+                {
+                  "tagName": "img",
+                  "className": "hangman__part hangman__rightLeg",
+                  "src": "../assets/hangman-5.png"
+                },
+                {
+                  "tagName": "img",
+                  "className": "hangman__part hangman__leftLeg",
+                  "src": "../assets/hangman-6.png"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "tagName": "div",
+          "className": "game",
+          "children": [
+            {
+              "tagName": "ul",
+              "className": "word"
+            },
+            {
+              "tagName": "div",
+              "className": "clue"
+            },
+            {
+              "tagName": "div",
+              "className": "keyboard",
+              "children": [
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "Й"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "Ц"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "У"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "К"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "Е"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "Н"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "Г"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "Ш"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "Щ"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "З"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "Х"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "Ъ"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "Ф"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "Ы"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "В"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "А"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "П"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "Р"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "О"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "Л"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "Д"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "Ж"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "Э"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "Я"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "Ч"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "С"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "М"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "И"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "Т"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "Ь"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "Б"
+                },
+                {
+                  "tagName": "button",
+                  "className": "keyboard__btn",
+                  "innerText": "Ю"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tagName": "div",
+      "className": "modal",
+      "children": [
+        {
+          "tagName": "img",
+          "className": "modal__img",
+          "src": "../assets/lose.png"
+        },
+        {
+          "tagName": "h3",
+          "className": "modal__text"
+        },
+        {
+          "tagName": "button",
+          "className": "modal__btn",
+          "innerText": "Играть заново"
+        }
+      ]
+    }
+  ]
+}

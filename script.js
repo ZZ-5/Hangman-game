@@ -1,238 +1,188 @@
-'use strict'
-import { questionsAndAnswers } from './questions.js'
+"use strict";
+import { questionsAndAnswers } from "./questions.js";
 
-// - newGame() - создает новую игру
-// - createGame(params) - создает компонентs для поля (виселица, клавиатура, вопрос-ответ) на основе json-файла, описывающего структуру тэгов (задание со звездочкой) **
-// - validateAnswer(word) - проверяет соответствие текущей буквы ответу
-// - renderHangman() - рисует человечка по частям на основе текущего значения итератора
-// - gameOver() - вызывается когда мы ответили правильно, либо проиграли. рисует текст и кнопку "начать заново"
 class Hangman {
-  constructor() {
-    this.createGame()
+  constructor(data) {
+    this.data = data;
+    this.currentAnswer = [];
+    this.countWrong = -1;
+    this.trueAnswer = [];
+    this.maxAttempt = 5;
+    this.createGame();
   }
 
-  createGame() {
-    const root = document.getElementById('root')
+  createElem(objData) {
+    const elem = document.createElement(objData.tagName);
 
-    // Основной блок
-    const container = document.createElement('div')
-    container.className = 'container'
-    document.body.append(container)
+    Object.keys(objData).map((key) => {
+      if (key !== "tagName" && key !== "children") {
+        elem[key] = objData[key];
+      }
+    });
 
-    const h1 = document.createElement('h1')
-    h1.className = 'title'
-    h1.innerHTML = 'ВИСИЛИЦА'
+    return elem;
+  }
 
-    container.append(h1)
-
-    const content = document.createElement('div');
-    content.className = 'content'
-    container.append(content)
-
-    // Блок висилицы
-    const gallows = document.createElement('div')
-    gallows.className = 'gallows'
-    content.append(gallows)
-
-    // Блок человека
-    const gallowsImg = document.createElement('img')
-    gallowsImg.className = 'gallows__img'
-    gallowsImg.src = '../assets/gallows.png'
-    gallowsImg.alt = 'gallows'
-    gallows.append(gallowsImg)
-
-    const gallowsHead = document.createElement('img')
-    gallowsHead.className = 'gallows__head gallows__part'
-    gallowsHead.src = '../assets/hangman-1.png'
-    gallowsHead.alt = 'head'
-    gallows.append(gallowsHead)
-
-
-    const gallowsBody = document.createElement('img')
-    gallowsBody.className = 'gallows__body gallows__part'
-    gallowsBody.src = '../assets/hangman-2.png'
-    gallowsBody.alt = 'Body'
-    gallows.append(gallowsBody)
-
-    const gallowsRigthHand = document.createElement('img')
-    gallowsRigthHand.className = 'gallows__rigthHand gallows__part'
-    gallowsRigthHand.src = '../assets/hangman-3.png'
-    gallowsRigthHand.alt = 'RigthHand'
-    gallows.append(gallowsRigthHand)
-
-    const gallowsLeftHand = document.createElement('img')
-    gallowsLeftHand.className = 'gallows__leftHand gallows__part'
-    gallowsLeftHand.src = '../assets/hangman-4.png'
-    gallowsLeftHand.alt = 'LeftHand'
-    gallows.append(gallowsLeftHand)
-
-    const gallowsRigthLeg = document.createElement('img')
-    gallowsRigthLeg.className = 'gallows__rigthLeg gallows__part'
-    gallowsRigthLeg.src = '../assets/hangman-5.png'
-    gallowsRigthLeg.alt = 'RigthLeg'
-    gallows.append(gallowsRigthLeg)
-
-
-    const gallowsLeftLeg = document.createElement('img')
-    gallowsLeftLeg.className = 'gallows__leftLeg gallows__part'
-    gallowsLeftLeg.src = '../assets/hangman-6.png'
-    gallowsLeftLeg.alt = 'LeftLeg'
-    gallows.append(gallowsLeftLeg)
-
-
-    // Блок с вопросом и словом
-    const game = document.createElement('div')
-    game.className = 'game'
-    content.append(game)
-
-    const word = document.createElement('ul')
-    word.className = 'word'
-    game.append(word)
-
-    const clue = document.createElement('div');
-    clue.className = 'clue'
-    game.append(clue)
-
-
-
-    //Переменные
-    let currentAnswer;
-    let countWrong = -1;
-    let trueAnswer = [];
-    let maxAttempt = 5;
-    let letters;
-
-    //Случайный вопрос и ответ
-    const getRandom = () => {
-      let { answer, question } = questionsAndAnswers[Math.floor(Math.random() * questionsAndAnswers.length)]
-
-      currentAnswer = answer.toLocaleUpperCase().split('');
-
-      answer = answer.toLocaleUpperCase().split('').map((i) => {
-        const letter = document.createElement('li');
-        letter.className = 'word__letter'
-        word.append(letter)
-
-      })
-      clue.innerHTML = question;
-
+  createNodes(objData) {
+    if (!objData.children) {
+      return this.createElem(objData);
     }
 
-    getRandom();
+    const elem = this.createElem(objData);
 
+    objData.children.forEach((child) => {
+      elem.append(this.createNodes(child));
+    });
 
+    return elem;
+  }
 
-    // Экранная клавиатура
-    const getKeyboard = () => {
-      const alph = "йцукенгшщзхъфывапролджэячсмитьбю";
+  // Проверка слова
+  onSymbolClick = (event, isKeyboardPressed) => {
+    let char;
 
-      const keyboard = document.createElement("div");
-      keyboard.className = "keyboard";
+    if (isKeyboardPressed) {
+      char = event.key.toUpperCase();
+    } else {
+      char = event.target.innerText;
+    }
 
-      const keyboardBtns = alph.toUpperCase().split("").map((word) => {
-        const button = document.createElement("button");
-        button.append(word);
-        button.className = "keyboard__btn";
-        button.onclick = onSymbolClick;
+    if (this.trueAnswer.includes(char)) {
+      return;
+    }
 
-        return button;
+    if (this.currentAnswer.includes(char)) {
+      this.currentAnswer.map((el, index) => {
+        if (el === char) {
+          this.trueAnswer = this.trueAnswer + el;
+          this.wordChars[index].innerHTML = char;
+          this.wordChars[index].className = "word__letter-guessed";
+
+          event.target.disabled = true;
+        }
       });
-
-      keyboard.append(...keyboardBtns);
-
-      return keyboard;
-    };
-
-    game.append(getKeyboard())
-
-
-    // Проверка слова
-    function onSymbolClick(event) {
-
-      const char = event.target.innerText;
-
-      if (currentAnswer.includes(char)) {
-        currentAnswer.map((el, index) => {
-          if (el === char) {
-            trueAnswer.push(char)
-            word.querySelectorAll('li')[index].innerHTML = char;
-            word.querySelectorAll('li')[index].className = 'word__letter-guessed'
-          }
-        })
-      } else {
-        // renderHangman()
-        countWrong++
-        document.getElementsByClassName('gallows__part')[`${countWrong}`].style = "display: block"
-      }
-
-      if (countWrong === maxAttempt) return gameOver(false)
-      if (currentAnswer.length === trueAnswer.length) return gameOver(true)
-
-    };
-
-
-    // Модальное окно
-    const modale = document.createElement('div')
-    modale.className = 'modale'
-    container.append(modale)
-
-    const modaleImg = document.createElement('img')
-    modaleImg.className = 'modale__img'
-    modaleImg.src = '../assets/lose.png'
-    modale.append(modaleImg)
-
-    const modaleText = document.createElement('h3')
-    modaleText.className = 'modale__text'
-    modaleText.innerText.toLocaleUpperCase()
-    modale.append(modaleText)
-
-    const modaleBtn = document.createElement('button')
-    modaleBtn.className = 'modale__btn'
-    modaleBtn.innerHTML = 'Играть заново'
-    modale.append(modaleBtn)
-
-
-    // Победа или поражение
-    let gameOver = (victory) => {
-      if (victory == true) {
-        container.getElementsByClassName('modale')[0].className = "modale-active"
-
-        modale.getElementsByClassName('modale__img')[0].src = '../assets/win.png'
-        modale.getElementsByClassName('modale__text')[0].innerHTML = 'Ты выиграл!'
-      } else {
-        container.getElementsByClassName('modale')[0].className = "modale-active"
-
-        modale.getElementsByClassName('modale__img')[0].src = '../assets/lose.png'
-        modale.getElementsByClassName('modale__text')[0].innerHTML = 'Ты проиграл!'
-      }
+    } else {
+      this.countWrong++;
+      let parts = this.hangman.getElementsByClassName("hangman__part");
+      this.renderHangman(parts, "show", this.countWrong);
     }
 
-    // Играть заново
-    function gameRestart() {
-      countWrong = -1;
-      trueAnswer = []
+    if (this.countWrong === this.maxAttempt) return this.gameResult(false);
+    if (this.currentAnswer.length === this.trueAnswer.length)
+      return this.gameResult(true);
+  };
 
-      // Нужно удалить из DOM-дерева узлы отвечающие за отрисовку слова и вопроса
-      // Затем вызвать getRandom
-      let a = document.body.getElementsByClassName('word__letter')
-      a.remove()
-      // answer = answer.toLocaleUpperCase().split('').map((i) => {
-      //   const letter = document.createElement('li');
-      //   letter.className = 'word__letter'
-      //   word.append(letter)
-      // })
-      modale.className = "modale"
-      // Сделать так, чтоб человечек был обернут в свой тэг. Менять только его стиль. Не искать каждый раз элементы в DOM
-      gallows.getElementsByTagName('div').style = "display: none"
+  //Случайный вопрос и ответ
+  generateRandomQuestion() {
+    let { answer, question } =
+      questionsAndAnswers[
+        Math.floor(Math.random() * questionsAndAnswers.length)
+      ];
 
-      // getRandom()
+    this.currentAnswer = answer.toLocaleUpperCase().split("");
+
+    answer = answer
+      .toLocaleUpperCase()
+      .split("")
+      .map((i) => {
+        const letter = document.createElement("li");
+        letter.className = "word__letter";
+        this.word.append(letter);
+      });
+    this.clue.innerHTML = question;
+  }
+
+  // Победа или поражение
+  gameResult(victory) {
+    if (victory == true) {
+      this.modal.className = "modal-active";
+      this.modalImg.src = "../assets/win.png";
+      this.modalText.innerHTML = "Ты выиграл!";
+    } else {
+      this.modal.className = "modal-active";
+      this.modalImg.src = "../assets/lose.png";
+      this.modalText.innerHTML = "Ты проиграл!";
+    }
+  }
+
+  // Играть заново
+  gameRestart = () => {
+    this.countWrong = -1;
+    this.trueAnswer = [];
+
+    this.container.remove();
+    this.createGame();
+  };
+
+  renderHangman(collection, type, counter) {
+    // type = "show" | "hide"
+    if (counter !== undefined) {
+      if (type === "show") {
+        collection[`${counter}`].style = "display: block";
+      } else if (type === "hide") {
+        collection[`${counter}`].style = "display: none";
+      }
+      return;
     }
 
-    modaleBtn.onclick = gameRestart
+    if (type === "show") {
+      this.changeHangmanStyle(collection, { display: "block" });
+    } else if (type === "hide") {
+      this.changeHangmanStyle(collection, { display: "none" });
+    }
+  }
+
+  changeHangmanStyle(collection, options) {
+    for (const el of collection) {
+      el.style = {
+        ...el.style,
+        ...options,
+      };
+    }
+  }
+
+  onKeyboardBtnClick = (e) => {
+    e.preventDefault();
+    console.log("e target ", e);
+    this.onSymbolClick(e, true);
+  };
+
+  async createGame() {
+    // найдем корневой тег
+    let root = document.getElementById("root");
+    root.append(this.createNodes(this.data));
+
+    this.game = document.querySelector(".game");
+    this.hangman = document.querySelector(".hangman");
+    this.container = document.querySelector(".container");
+
+    this.word = document.querySelector(".word");
+    this.wordChars = this.word.getElementsByTagName("li");
+
+    this.clue = document.querySelector(".clue");
+
+    this.modal = document.querySelector(".modal");
+    this.modalImg = document.querySelector(".modal__img");
+    this.modalText = document.querySelector(".modal__text");
+
+    this.generateRandomQuestion();
+
+    this.keyboard = document.querySelector(".keyboard");
+
+    document.addEventListener("keypress", this.onKeyboardBtnClick);
+
+    this.keyboard.addEventListener("click", (e) => {
+      if (e.target === this.keyboard) return;
+      this.onSymbolClick(e);
+    });
+
+    this.modalBtn = document.querySelector(".modal__btn");
+    this.modalBtn.onclick = this.gameRestart;
   }
 }
 
-new Hangman();
+// загрузим данные из json асинхронно в браузере
+let data = await fetch("./data.json"); // получить json
+data = await data.json(); // приведем к обьекту
 
-
-const root = document.getElementById('root')
+new Hangman(data);
